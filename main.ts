@@ -1,5 +1,5 @@
 const  wa  =  require ( '@open-wa/wa-automate' );
-
+const core = require ('./core.ts');
 const pathChrome = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 
 wa.create({
@@ -8,13 +8,13 @@ wa.create({
     qrTimeout: 0,                       // Nao renova o qrcode
     autoRefresh: false,                 // Nao fica recarregando o qrcode
     cacheEnabled: true,                 // Habilita a  criacao de cache
-    deleteSessionDataOnLogout: true,    // Deleta os dados de sessao ao desconectar ( essa opcao é muito util para testes onde é ...
+    deleteSessionDataOnLogout: false,    // Deleta os dados de sessao ao desconectar ( essa opcao é muito util para testes onde é ...
                                         // ... necessario desconectar-se várias vezes, esses SessionsData podem gerar conflitos )    
-    executablePath: pathChrome,         // Caminho do path executavel do chrome
+    //executablePath: pathChrome,         // Caminho do path executavel do chrome
     useChrome: true,                    // Detecta automaticamente uma instancia do Chrome
     headless: true,                     // Quando desabilitada permite que uma janela do chrome seja aberta para ser vizualido o bot, marque como true caso nao queira essa informacao
     ezqr: true,                         // Gera um link com o qrcode
-    killClientOnLogout: true,           // Mata o cliente quando um logout for detectado
+    killClientOnLogout: false,           // Mata o cliente quando um logout for detectado
     legacy: true,                       // Usa as versoes mais estaveis da lib
     logConsole: true,                   // Registra todos os logs do navegador no terminal
     logConsoleErrors: true,             // Registra todos os logs de erros do navegador no terminal
@@ -29,4 +29,15 @@ wa.create({
         user: ''                        // Usuario
     },
     discord: 'Linck#7638'               // Discrod do desenvolvedor
-});
+}).then(client => start(client));
+
+
+
+function start(client) {
+    client.onMessage(async message => {
+      await client.sendText(core.nerveImpulse(message));   
+      // if (message.body === 'Hi') {
+      //   await client.sendText(message.from, '👋 Hello!');
+      // }
+    });
+  }
