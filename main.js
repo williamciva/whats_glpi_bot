@@ -1,5 +1,5 @@
 const  wa  =  require ( '@open-wa/wa-automate' );
-const core = require ('./core.ts');
+const Core = require ('./core.js');
 const pathChrome = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 
 wa.create({
@@ -31,13 +31,9 @@ wa.create({
     discord: 'Linck#7638'               // Discrod do desenvolvedor
 }).then(client => start(client));
 
-
-
 function start(client) {
     client.onMessage(async message => {
-      await client.sendText(core.nerveImpulse(message));   
-      // if (message.body === 'Hi') {
-      //   await client.sendText(message.from, '👋 Hello!');
-      // }
+      const messageToCore = new Core(message);
+      await client.sendText(message.from, messageToCore.nerveImpulse());   
     });
   }
